@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import User, { IUser } from '../model/userModel';
+import User from '../model/userModel';
 
 const secret = 'your_jwt_secret'; 
 
@@ -45,7 +45,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: 'invaliodo contraseña o email' });
     }
 
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });

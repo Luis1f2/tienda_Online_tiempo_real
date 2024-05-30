@@ -3,7 +3,7 @@ import User from '../model/userModel'
 
 declare module 'express-serve-static-core' {
     interface Request {
-      user?: string; 
+      user?: string;
     }
 }
 
@@ -47,7 +47,7 @@ export const createUser = async (req: Request, res: Response) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'Usuario ya existente' });
     }
 
     const user = new User({ name, email, password });
@@ -58,7 +58,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (isError(error)) {
       res.status(500).json({ message: error.message });
     } else {
-      res.status(500).json({ message: 'Unknown error' });
+      res.status(500).json({ message: 'error desconocido' });
     }
   }
 };

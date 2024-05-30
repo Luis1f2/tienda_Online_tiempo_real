@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import {
-  crearProducto,
-  obtenerProductos,
-  obtenerProductoPorId,
-  actualizarCantidadProducto,
-  verificarProductoAgotado
+    crearProducto,
+    obtenerProductos,
+    obtenerProductoPorId,
+    actualizarCantidadProducto,
+    verificarProductoAgotado
 } from '../controller/producController';
 import { registerClient } from '../controller/longPollingControllers';
 

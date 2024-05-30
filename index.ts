@@ -6,7 +6,7 @@ import userRoutes from './src/routes/userRoutes';
 import producRoutes from './src/routes/producRoutes'
 
 const app = express();
-app.use(bodyParser.json());
+
 connectDB();
 
 const port = 3000;
@@ -17,7 +17,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(bodyParser.json());
 // Rutas
 app.use('/usuario', userRoutes);
 app.use('/producto',producRoutes);
