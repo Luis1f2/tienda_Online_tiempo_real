@@ -1,12 +1,18 @@
 import { Request, Response } from 'express';
 import Producto from '../model/ProducModel';
 
-let clients: any[] = [];
+interface Client {
+  id: string;
+  res: Response;
+}
 
-export const registerClient = (req: Request, res: Response) => {
+let clients: Client[] = [];
+
+// Registrar un cliente para notificaciones
+export const registerClient = (req: Request, res: Response): void => {
   const clientId = req.params.id;
 
-  const client = {
+  const client: Client = {
     id: clientId,
     res,
   };
@@ -19,7 +25,8 @@ export const registerClient = (req: Request, res: Response) => {
   });
 };
 
-export const notifyClients = async (productId: string) => {
+// Notificar a los clientes del cambio en el producto
+export const notifyClients = async (productId: string): Promise<void> => {
   const product = await Producto.findById(productId);
 
   clients.forEach(client => {
@@ -29,25 +36,4 @@ export const notifyClients = async (productId: string) => {
   });
 
   clients = clients.filter(client => client.id !== productId);
-};
-
-export const actualizarCantidadProducto = async (req: Request, res: Response) => {
-  try {
-    const { cantidad } = req.body;
-    const producto = await Producto.findById(req.params.id);
-
-    if (producto) {
-      producto.cantidad = cantidad;
-      await producto.save();
-
-      // Notificar a los clientes del cambio
-      notifyClients(req.params.id);
-
-      res.status(200).json(producto);
-    } else {
-      res.status(404).json({ message: 'Producto no encontrado' });
-    }
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
 };

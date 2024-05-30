@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from 'body-parser';
 import connectDB from './src/config/database';
 import userRoutes from './src/routes/userRoutes';
+import producRoutes from './src/routes/producRoutes'
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,6 +20,9 @@ app.use(cors(corsOptions));
 
 // Rutas
 app.use('/usuario', userRoutes);
+app.use('/producto',producRoutes);
+
+
 
 app.get('/', (req, res) => {
     res.send('que hubo muchacho si funciono');
