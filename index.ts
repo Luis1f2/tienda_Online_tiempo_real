@@ -1,44 +1,29 @@
-import express from 'express';
-import pollingRoutes from './src/routes/pollingRoutes';
-import http from 'http';
-import dotenv from 'dotenv'
-import { Server } from 'ws';
-import ProductoRoutes from './src/routes/productoRoutes';
-import ComprasRoutes from './src/routes/comprasRoutes'
-import adminRoutes from './src/routes/adminRoutes'
-import WebSocketController from './src/controller/websocketController';
+import express from "express";
+import cors from "cors";
+import bodyParser from 'body-parser';
 import connectDB from './src/config/database';
-
-dotenv.config();
-connectDB();
-
+import userRoutes from './src/routes/userRoutes';
 
 const app = express();
+app.use(bodyParser.json());
+connectDB();
 
-app.use(express.json());
+const port = 3000;
 
-app.use('/', pollingRoutes);
-app.use('/compra', ProductoRoutes);
-app.use('/compra', ComprasRoutes);
-app.use('/admin', adminRoutes)
+const corsOptions = {
+    origin: 'http://localhost:3000', // Reemplaza esto con tu dominio
+    optionsSuccessStatus: 200
+};
 
-const server = http.createServer(app);
-const wss = new Server({ server });
+app.use(cors(corsOptions));
 
-new WebSocketController(wss);
+// Rutas
+app.use('/usuario', userRoutes);
 
-const PORT = process.env.PORT || 3000;
-
-wss.on('connection', (ws) => {
-    console.log('Cliente conectado');
-  
-    ws.on('close', () => {
-      console.log('Cliente desconectado');
-    });
-  });
-
-server.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+app.get('/', (req, res) => {
+    res.send('que hubo muchacho si funciono');
 });
 
-export { wss };
+    app.listen(port, () => {
+        console.log(`servidor corriendo en direccion http://localhost:${port}`);
+});
