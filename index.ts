@@ -3,13 +3,15 @@ import cors from "cors";
 import bodyParser from 'body-parser';
 import connectDB from './src/config/database';
 import userRoutes from './src/routes/userRoutes';
+import dotenv from 'dotenv'
 import producRoutes from './src/routes/producRoutes'
 
 const app = express();
+app.use(express.json())
 
 connectDB();
 
-const port = 3000;
+const port = process.env.port || 3000;
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Reemplaza esto con tu dominio
