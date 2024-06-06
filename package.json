@@ -4,7 +4,7 @@
   "description": "proyecto de la clase cliente servidor",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "concurrently \"nodemon --exec ts-node index.ts\" \"nodemon --exec ts-node indexws.ts\"",
     "test": "npm start"
   },
   "repository": {
@@ -38,6 +38,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/ws": "^8.5.10",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

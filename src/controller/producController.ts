@@ -12,7 +12,7 @@ export const crearProducto = async (req: Request, res: Response): Promise<void> 
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(400).json({ message: 'An unknown error occurred' });
+      res.status(400).json({ message: 'producto no creado' });
     }
   }
 };
@@ -26,7 +26,7 @@ export const obtenerProductos = async (req: Request, res: Response): Promise<voi
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(400).json({ message: 'An unknown error occurred' });
+      res.status(400).json({ message: 'algo paso' });
     }
   }
 };
@@ -44,7 +44,7 @@ export const obtenerProductoPorId = async (req: Request, res: Response): Promise
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(400).json({ message: 'An unknown error occurred' });
+      res.status(400).json({ message: 'Error algo paso' });
     }
   }
 };
@@ -64,13 +64,13 @@ export const actualizarCantidadProducto = async (req: Request, res: Response): P
 
       res.status(200).json(producto);
     } else {
-      res.status(404).json({ message: 'Producto no encontrado' });
+      res.status(404).json({ message: 'cantidad no cambiada' });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(400).json({ message: 'An unknown error occurred' });
+      res.status(400).json({ message: 'algo paso' });
     }
   }
 };

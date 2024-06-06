@@ -1,5 +1,9 @@
 {
-    "watch": ["index.ts"],
+    "watch": ["index.ts", "indexws.ts"],
     "ext": "ts",
-    "exec": "ts-node index.ts"
+    "ignore": ["node_modules"],
+    "execMap": {
+        "ts": "ts-node"
+    },
+    "exec": "concurrently \"nodemon --exec ts-node index.ts\" \"nodemon --exec ts-node indexws.ts\""
 }

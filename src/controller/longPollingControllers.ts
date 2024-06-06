@@ -26,6 +26,7 @@ export const registerClient = (req: Request, res: Response): void => {
 };
 
 // Notificar a los clientes del cambio en el producto
+
 export const notifyClients = async (productId: string): Promise<void> => {
     const product = await Producto.findById(productId);
 
