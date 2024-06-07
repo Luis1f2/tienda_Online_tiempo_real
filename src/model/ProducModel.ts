@@ -1,6 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 
 interface IProducto extends Document {
+    src:string;
     nombre: string;
     descripcion: string;
     precio: number;
@@ -8,6 +9,7 @@ interface IProducto extends Document {
 }
 
 const productoSchema = new Schema<IProducto>({
+    src:{type: String, required: true},
     nombre: { type: String, required: true },
     descripcion: { type: String, required: true },
     precio: { type: Number, required: true },
