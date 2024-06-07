@@ -29,6 +29,9 @@ wss.on('connection', (ws: WebSocket) => {
         case 'reply':
           await handleReplyToComment(ws, data);
           break;
+        case 'get':
+          await handleGetComments(ws, data);
+          break;
         default:
           ws.send(JSON.stringify({ error: 'Tipo de mensaje desconocido' }));
       }
@@ -100,7 +103,7 @@ const handleReplyToComment = async (ws: WebSocket, data: any) => {
     const reply = new Comment({ productId: parentComment.productId, username, message, replies: [] });
     await reply.save();
 
-    
+    // Asegurarse de que `parentComment.replies` es un array de `ObjectId`
     if (!Array.isArray(parentComment.replies)) {
       parentComment.replies = [];
     }
@@ -115,5 +118,12 @@ const handleReplyToComment = async (ws: WebSocket, data: any) => {
   } else {
     ws.send(JSON.stringify({ error: 'Comentario padre no encontrado' }));
   }
+};
+
+const handleGetComments = async (ws: WebSocket, data: any) => {
+  const { productId } = data;
+  const comments = await Comment.find({ productId: new Types.ObjectId(productId) });
+
+  ws.send(JSON.stringify({ type: 'get', data: comments }));
 };
 
