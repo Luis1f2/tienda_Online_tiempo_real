@@ -4,14 +4,16 @@ interface IComment extends Document {
   productId: Types.ObjectId;
   username: string;
   message: string;
-  createdAt: Date;
+  replies: Types.ObjectId[];
 }
 
-const CommentSchema = new Schema<IComment>({
+const commentSchema = new Schema<IComment>({
   productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
   username: { type: String, required: true },
   message: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  replies: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
-export default model<IComment>('Comment', CommentSchema);
+const Comment = model<IComment>('Comment', commentSchema);
+
+export default Comment;
