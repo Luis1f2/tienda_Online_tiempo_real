@@ -51,8 +51,8 @@ wss.on('connection', (ws: WebSocket) => {
 console.log(`Servidor WebSocket corriendo en el puerto ${PORT}`);
 
 const handleCreateComment = async (ws: WebSocket, data: any) => {
-  const { productId, username, message } = data;
-  const newComment = new Comment({ productId, username, message, replies: [] });
+  const { username, message } = data;
+  const newComment = new Comment({ username, message, replies: [] });
   await newComment.save();
 
   wss.clients.forEach((client) => {
@@ -100,7 +100,7 @@ const handleReplyToComment = async (ws: WebSocket, data: any) => {
   const parentComment = await Comment.findById(commentId);
 
   if (parentComment) {
-    const reply = new Comment({ productId: parentComment.productId, username, message, replies: [] });
+    const reply = new Comment({ username, message, replies: [] });
     await reply.save();
 
     // Asegurarse de que `parentComment.replies` es un array de `ObjectId`
@@ -121,9 +121,7 @@ const handleReplyToComment = async (ws: WebSocket, data: any) => {
 };
 
 const handleGetComments = async (ws: WebSocket, data: any) => {
-  const { productId } = data;
-  const comments = await Comment.find({ productId: new Types.ObjectId(productId) });
+  const comments = await Comment.find({});
 
   ws.send(JSON.stringify({ type: 'get', data: comments }));
 };
-
