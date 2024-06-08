@@ -49,32 +49,35 @@ export const obtenerProductoPorId = async (req: Request, res: Response): Promise
   }
 };
 
+
 // Actualizar la cantidad de un producto
 export const actualizarCantidadProducto = async (req: Request, res: Response): Promise<void> => {
   try {
     const { cantidad } = req.body;
-    const producto = await Producto.findById(req.params.id);
+    const productoId = req.params.id;
+
+    const producto = await Producto.findByIdAndUpdate(
+      productoId,
+      { cantidad },
+      { new: true, runValidators: true, context: 'query' }
+    );
 
     if (producto) {
-      producto.cantidad = cantidad;
-      await producto.save();
-
-      // Notificar a los clientes del cambio
-      await notifyClients(req.params.id);
+      await notifyClients(productoId);
 
       res.status(200).json(producto);
     } else {
-      res.status(404).json({ message: 'cantidad no cambiada' });
+      res.status(404).json({ message: 'Producto no encontrado' });
     }
   } catch (error: unknown) {
+    console.error('Error en actualizarCantidadProducto:', error);
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
     } else {
-      res.status(400).json({ message: 'algo paso' });
+      res.status(400).json({ message: 'Algo pasó' });
     }
   }
 };
-
 // Verificar si un producto está agotado
 export const verificarProductoAgotado = async (req: Request, res: Response): Promise<void> => {
   try {
