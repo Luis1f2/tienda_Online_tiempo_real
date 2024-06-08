@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { createPurchase } from '../controller/compraController';
+import { createPurchases,  getAllPurchases } from '../controller/compraController';
 
 const router = Router();
 
-router.post('/compras', createPurchase);
+router.post('/compras', createPurchases);
+router.get('/compras', getAllPurchases);
 
 export default router;

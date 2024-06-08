@@ -93,3 +93,22 @@ export const verificarProductoAgotado = async (req: Request, res: Response): Pro
     }
   }
 };
+
+// Eliminar un producto
+export const eliminarProducto = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const producto = await Producto.findByIdAndDelete(req.params.id);
+    if (producto) {
+      res.status(200).json({ message: 'Producto eliminado correctamente' });
+    } else {
+      res.status(404).json({ message: 'Producto no encontrado' });
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(400).json({ message: 'An unknown error occurred' });
+    }
+  }
+};
+
