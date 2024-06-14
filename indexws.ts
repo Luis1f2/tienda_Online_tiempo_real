@@ -98,7 +98,13 @@ const handleCreateComment = async (ws: WebSocket & { userId?: string }, data: an
     }
 
     const { message } = data;
-    const newComment = new Comment({ username: user.username, message, replies: [] });
+    const newComment = new Comment({
+      username: user.username,
+      message,
+      replies: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
     await newComment.save();
 
     broadcast({ type: 'create', data: newComment });
@@ -115,6 +121,7 @@ const handleEditComment = async (ws: WebSocket, data: any) => {
 
     if (comment) {
       comment.message = message;
+      comment.updatedAt = new Date();
       await comment.save();
       broadcast({ type: 'edit', data: comment });
     } else {
@@ -159,13 +166,20 @@ const handleReplyToComment = async (ws: WebSocket & { userId?: string }, data: a
     const parentComment = await Comment.findById(commentId);
 
     if (parentComment) {
-      const reply = new Comment({ username: user.username, message, replies: [] });
+      const reply = new Comment({
+        username: user.username,
+        message,
+        replies: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
       await reply.save();
 
       if (!Array.isArray(parentComment.replies)) {
         parentComment.replies = [];
       }
       parentComment.replies.push(reply._id as Types.ObjectId);
+      parentComment.updatedAt = new Date();
       await parentComment.save();
 
       broadcast({ type: 'reply', data: reply });
