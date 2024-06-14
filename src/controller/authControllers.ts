@@ -1,8 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../model/userModel';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const secret =  'clave_secreta'; 
+const secret = process.env.JWT_SECRET;
+
+if (!secret) {
+    throw new Error('JWT secret not defined');
+}
 
 declare module 'express-serve-static-core' {
     interface Request {
@@ -61,27 +67,6 @@ export const loginUser = async (req: Request, res: Response) => {
             res.status(500).json({ message: error.message });
         } else {
             res.status(500).json({ message: 'a ocurrido un error inesperado' });
-        }
-    }
-};
-
-// Verificar Token
-export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ message: 'acceso denegado, token incorrecto!' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, secret) as { id: string };
-        req.user = decoded.id;
-        next();
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(401).json({ message: 'token invalido!' });
-        } else {
-            res.status(401).json({ message: 'un error a ocurrido' });
         }
     }
 };

@@ -14,7 +14,7 @@ const userSchema = new Schema<IUser>({
   password: { type: String, required: true },
 });
 
-// verifica la contraseña
+// Encriptar la contraseña antes de guardarla
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
