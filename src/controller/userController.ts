@@ -70,3 +70,16 @@ export const loginUser = async (req: Request, res: Response) => {
         }
     }
 };
+
+export const odtenerUsuarios = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = await User.find();
+      res.status(200).json(user);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(400).json({ message: 'algo paso' });
+      }
+    }
+  };
